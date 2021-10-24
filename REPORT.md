@@ -41,6 +41,11 @@
   samples of this buffer, which might come from different timesteps (and potentially from
   different versions of the exploratory policy).
   
+  Here are some advantages of policy-based methods:
+- **Continuous action spaces** &mdash; Policy-based methods are well-suited for continuous action spaces.
+- **Stochastic policies** &mdash; Both value-based and policy-based methods can learn deterministic policies. However, policy-based methods can also learn true stochastic policies.
+- **Simplicity** &mdash; Policy-based methods directly learn the optimal policy, without having to maintain a separate value function estimate. With value-based methods, the agent uses its experience with the environment to maintain an estimate of the optimal action-value function, from which an optimal policy is derived. This intermediate step requires the storage of lots of additional data since you need to account for all possible action values. Even if you discretize the action space, the number of possible actions can get quite large. And, using DQN to determine the action that maximizes the action-value function within a continuous or high-dimensional space requires a complex optimization process at every timestep.
+  
 In DDPG the actor is the policy based part and the critic is the Q-learning part. 
 To learn the actor function <a href="https://www.codecogs.com/eqnedit.php?latex=\mu(s|\theta^Q)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mu(s|\theta^Q)" title="\mu(s|\theta^Q)" /></a> the DDPG algorithm performs gradient ascend w.r.t parameters to solve 
 
