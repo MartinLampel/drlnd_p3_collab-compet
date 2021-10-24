@@ -8,6 +8,12 @@
 
 ## Introduction
 
+In real life, each human interacts with other humans and the enviroment. This is also true for artifical intelligence. AI needs to interact with humans and other agents in a safe and efficient way.  E.g. autonomous systems as cars must interact with many different kind of agents. 
+
+Reinforcement learning shows the most promise to solve this task.
+This project will demonstrate how two agents can work together in a colleboration and competive setting. 
+
+In this environment, two agents control rackets to bounce a ball over a net. If an agent hits the ball over the net, it receives a reward of +0.1. If an agent lets a ball hit the ground or hits the ball out of bounds, it receives a reward of -0.01. Thus, the goal of each agent is to keep the ball in play.
 
 
 ## Learning Algorithm
@@ -77,8 +83,9 @@ After we have covered the ideas behind the DDPG here is the full algorithm
 
 The code is written in PyTorch and Python3, executed in Jupyter Notebook
 
-- Continuous_Control.ipynb	: Training and evaluation of the agent
+- Tennis.ipynb	: Training and evaluation of the agents
 - ddpgagent.py	: An agent that implement the DDPG algorithm
+- magent.py : Implementation of multiple agents for this task. Uses the DDPG-agent
 - models.py	: DNN models for the actor and the critic
 - replaybuffer.py : Implementation of experience replay buffer
 - checkpoint.pt : parameters for actor/critic network
