@@ -94,18 +94,62 @@ The code is written in PyTorch and Python3, executed in Jupyter Notebook
 
 ## Implementation
 
+To solve this task, I decided to stick with the DDPG algorithm. Since the agents collaborate and compete, we can't apply direct the algorithm. Therefore a wrapper class `MultiAgent' exists. This class supports the action selection and the learning. Internal this class uses two DDPG-agents and a shared experienc buffer for the agents. The DDPG agent and the replay buffer is based on the classes from the continous control project.
+
 ### Models
 
 
 #### Actor
-![](images/actormodel.png)
+
+The actor model consists of three layers. The activation function relu is used for the hidden layers. 
+For the output layer tanh as activation function was used. 
+
+```
+ActorModel(
+  (fc1): Linear(in_features=24, out_features=256, bias=True)
+  (fc2): Linear(in_features=256, out_features=128, bias=True)
+  (fc3): Linear(in_features=128, out_features=2, bias=True)
+)
+```
 
 #### Critic
 
-![](images/crtiticmodel.png)
+The critic model uses also three layers and relu as activation function for the hidden layers. 
+For the output layer no activation function was used. 
+
+```
+CriticModel(
+  (fc1): Linear(in_features=24, out_features=256, bias=True)
+  (fc2): Linear(in_features=258, out_features=128, bias=True)
+  (fc3): Linear(in_features=128, out_features=1, bias=True)
+)
+```
+
+#### Exploration vs Exploitation
+One challenge is choosing which action to take while the agent is still learning the optimal policy. Should the agent choose an action based on the rewards observed thus far? Or, should the agent try a new action in hopes of earning a higher reward? This is known as the **exploration vs. exploitation dilemma**.
+
+The the exploration vs. exploitation dilemma is addressed with an  𝛆-greedy algorithm in the navigation project. 
+For this project the **Ornstein-Uhlenbeck process** is implemented. 
+
+The Ornstein-Uhlenbeck process itself has three hyperparameters that determine the noise characteristics and magnitude:
+- mu: the long-running mean
+- theta: the speed of mean reversion
+- sigma: the volatility parameter
+
+The parameters for process can found below. 
+
 
 ### Hyperparameters
 
+The hyperparameters are choosen to learn the tennis game in less than 1000 epochs. 
+Batch sizes are tried in the range from 64 up to 1024. It seems lower batch sizes are more suitable for the
+agent to learn the task. Finally, the batch size are set to 128.
+
+The 𝜏 parameter for the soft update is set to 0.05. Different values between 0.001 up to 0.75 are tested.
+To improve the learning speed, a larger value speeds up the learning of the agent signifcantly as I experienced
+in the previous task. 
+
+The learning interval is set to 1 and the number of experiences are learned, is set to 10. 
 
 ```python
 OU_SIGMA = 0.2          # Ornstein-Uhlenbeck noise parameter
@@ -124,9 +168,16 @@ BUFFER_SIZE = 1e6
 
 ### Results
 
+The goal of this project is that an agent achieves a score of 0.5 over 100 episodes, taking the best score from either agent for a given episode.
+With the hyperparameter configuration the agents can solve this task after 218 episodes. The best achieved score was 2.6.
 
 
 ![](images/score.png)
+
+From different training runs I made the observation, the training progress depends mainly on the experiences during the first 100 episodes. 
+If the agents achieve during this episodes a higher reward, the learning progress is much faster compared to the low reward case. 
+
+
 
 ## Ideas for Future Work
 
@@ -141,4 +192,3 @@ BUFFER_SIZE = 1e6
 * [3] [*Deterministic Policy Gradients Algorithms* paper by Silver et. al.](http://proceedings.mlr.press/v32/silver14.pdf)
 * [4] [Post on *Deep Deterministic Policy Gradients* from OpenAI's **Spinning Up in RL**](https://spinningup.openai.com/en/latest/algorithms/ddpg.html)
 * [5] [Post on *Policy Gradient Algorithms* by **Lilian Weng**](https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html)
-* [6] [A Gentle Introduction to Exploding Gradients in Neural Networks](https://machinelearningmastery.com/exploding-gradients-in-neural-networks/)
