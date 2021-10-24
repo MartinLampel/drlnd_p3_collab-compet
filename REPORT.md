@@ -1,5 +1,4 @@
-# Project 2: Continuous Control
-
+# Project 3: Collaboration and Competition
 * [Introduction](#introduction)
 * [Learning Algorithm](#learning-algorithm)   
 * [Project Structure](#project-structure)   
